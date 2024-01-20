@@ -56,7 +56,7 @@ const Auth = () => {
       token: credential
     };
     localStorage.setItem("user", JSON.stringify(userData));
-    toast.success("User LoggedIn Successfully !");
+    navigate("/");
     // console.log(res);
   };
 

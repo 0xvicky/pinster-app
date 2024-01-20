@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
-import UserSchema from "./userSchema.ts";
+import User from "./userSchema.js";
 
 const commentSchema = new mongoose.Schema({
   text: {type: String},
-  creator: {type: UserSchema},
-  createdAt: Date
+  creator: {type: mongoose.Schema.Types.ObjectId, ref: User},
+  createdAt: {type: Date, default: Date.now}
 });
 
-const CommentSchema = mongoose.model("CommentSchema", commentSchema);
+const CommentModel = mongoose.model("CommentSchema", commentSchema);
 
-export default CommentSchema;
+export default CommentModel;

@@ -1,4 +1,4 @@
-import * as api from "./api";
+import * as api from "../api";
 
 export const signUpAction = (userData, navigate) => async dispatch => {
   try {
