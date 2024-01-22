@@ -1,67 +1,68 @@
 import React, {useState} from "react";
 import Input from "./Input";
+import FileBase64 from "react-file-base64";
+import {addPinAction} from "../../actions";
+import {useDispatch} from "react-redux";
 
 const AddPin = () => {
   const initialState = {
-    title: ""
+    title: "",
+    tags: [],
+    selectedFile: ""
   };
-  const [formData, setFormData] = useState();
+  const [pinData, setPinData] = useState(initialState);
 
-  const handleChange = e => {};
+  const dispatch = useDispatch();
 
+  const handleChange = e => {
+    setPinData({...pinData, [e.target.name]: e.target.value});
+  };
+
+  const handleSubmit = () => {
+    console.log(pinData);
+    try {
+      dispatch(addPinAction(pinData));
+    } catch (error) {
+      console.log(`Error occured in addPin jsx file:${error}`);
+    }
+  };
   return (
-    <div className='flex justify-center h-screen items-center'>
-      <div className='w-full md:w-1/2 flex flex-col items-center'>
-        {/* text login */}
-
-        {/* email input */}
-        <Input
-          type='text'
-          name='title'
-          placeholder='Title'
-          handleChange={handleChange}
+    <div className='flex flex-col space-y-3 w-1/2 h-1/2 items-center '>
+      <Input
+        type='text'
+        name='title'
+        placeholder='Title'
+        handleChange={handleChange}
+        value={pinData.title}
+      />
+      <Input
+        type='text'
+        name='tags'
+        placeholder='Tags'
+        handleChange={e => {
+          let tags = e.target.value;
+          let tagArr = tags.split(",").map(tag => {
+            return tag.trim();
+          });
+          setPinData({...pinData, tags: tagArr});
+        }}
+        value={pinData.tags}
+      />
+      <div>
+        <FileBase64
+          type='file'
+          multiple={false}
+          onDone={({base64}) => setPinData({...pinData, selectedFile: base64})}
         />
-        {/* password input */}
-        <div className='w-3/4 mb-6'>
-          <input
-            type='password'
-            name='password'
-            id='password'
-            className='w-full py-4 px-8 bg-slate-200 placeholder:font-semibold rounded hover:ring-1 outline-blue-500 '
-            placeholder='Password'
-          />
-        </div>
-        {/* remember input */}
-        <div className='w-3/4 flex flex-row justify-between'>
-          <div className='flex items-center gap-x-1'>
-            <input
-              type='checkbox'
-              name='remember'
-              id=''
-              className='w-4 h-4'
-            />
-            <label
-              htmlFor=''
-              className='text-sm text-slate-400'>
-              Remember me
-            </label>
-          </div>
-          <div>
-            <a
-              href='#'
-              className='text-sm text-slate-400 hover:text-blue-500'>
-              Forgot?
-            </a>
-          </div>
-        </div>
-        {/* button */}
-        <div className='w-3/4 mt-4'>
-          <button
-            type='submit'
-            className='py-4 bg-blue-400 w-full rounded text-blue-50 font-bold hover:bg-blue-700'>
-            LOGIN
-          </button>
-        </div>
+      </div>
+
+      <div className='w-3/4 mt-4'>
+        <button
+          type='submit'
+          onClick={handleSubmit}
+          className='py-4 bg-blue-400 w-full rounded text-blue-50 font-bold hover:bg-blue-700'>
+          Add Pin
+        </button>
       </div>
     </div>
   );

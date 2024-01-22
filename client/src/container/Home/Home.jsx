@@ -4,12 +4,14 @@ import {Routes, Route} from "react-router-dom";
 
 const Home = () => {
   return (
-    <Routes>
-      <Route
-        path='/addpin'
-        element={<AddPin />}
-      />
-    </Routes>
+    <div className='flex justify-center items-center h-screen border-t-4'>
+      <Routes>
+        <Route
+          path='/addpin'
+          element={<AddPin />}
+        />
+      </Routes>
+    </div>
   );
 };
 
